@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"com.smartinterviewshedular.commonlib.customer.model", "com.smartinterviewshedular.commonlib.common.model"})
+@EntityScan(basePackages = {"com.smartinterviewshedular.commonlib.customer.model", "com.smartinterviewshedular.commonlib.common.model", "com.smartinterviewshedular.commonlib.vacancy.model"})
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class PortalServiceApplication {
