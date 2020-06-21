@@ -1,13 +1,12 @@
 package com.smartinterviewshedular.portalservice.customer.service;
 
+import com.smartinterviewshedular.commonlib.portalservice.model.Customer;
 import com.smartinterviewshedular.portalservice.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-
-import com.smartinterviewshedular.commonlib.customer.model.Customer;
 
 @Service
 public class CustomerService {

@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.interviewer.repository;
 
-import com.smartinterviewshedular.commonlib.interviwer.model.Interviewer;
+import com.smartinterviewshedular.commonlib.portalservice.model.Interviewer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

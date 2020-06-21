@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.interviewerhasinterview.service;
 
-import com.smartinterviewshedular.commonlib.interviwer.model.InterviewerHasInterview;
+import com.smartinterviewshedular.commonlib.portalservice.model.InterviewerHasInterview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.smartinterviewshedular.portalservice.interviewerhasinterview.repository.InterviewerHasInterviewRepository;

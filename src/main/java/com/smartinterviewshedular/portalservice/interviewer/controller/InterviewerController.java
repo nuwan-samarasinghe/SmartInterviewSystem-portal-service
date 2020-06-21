@@ -1,16 +1,11 @@
 package com.smartinterviewshedular.portalservice.interviewer.controller;
 
-import com.smartinterviewshedular.commonlib.interview.model.Interview;
-import com.smartinterviewshedular.commonlib.interviwer.model.Interviewer;
-import com.smartinterviewshedular.commonlib.interviwer.model.InterviewerHasInterview;
-import com.smartinterviewshedular.commonlib.interviwer.model.InterviewerInterviewStatusResponse;
-import com.smartinterviewshedular.commonlib.track.model.Track;
+import com.smartinterviewshedular.commonlib.portalservice.model.*;
 import com.smartinterviewshedular.portalservice.interview.service.InterviewService;
 import com.smartinterviewshedular.portalservice.interviewer.service.InterviewerService;
 import com.smartinterviewshedular.portalservice.interviewerhasinterview.service.InterviewerHasInterviewService;
 import com.smartinterviewshedular.portalservice.track.service.TrackService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +17,21 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/interviewers")
 public class InterviewerController {
-    @Autowired
-    private InterviewerService interviewerService;
-    @Autowired
-    private TrackService trackService;
-    @Autowired
-    private InterviewerHasInterviewService interviewerHasInterviewService;
-    @Autowired
-    private InterviewService interviewService;
+    private final InterviewerService interviewerService;
+    private final TrackService trackService;
+    private final InterviewerHasInterviewService interviewerHasInterviewService;
+    private final InterviewService interviewService;
+
+    public InterviewerController(
+            InterviewerService interviewerService,
+            TrackService trackService,
+            InterviewerHasInterviewService interviewerHasInterviewService,
+            InterviewService interviewService) {
+        this.interviewerService = interviewerService;
+        this.trackService = trackService;
+        this.interviewerHasInterviewService = interviewerHasInterviewService;
+        this.interviewService = interviewService;
+    }
 
     @PostMapping
     public ResponseEntity<Interviewer> createInterviewer(@RequestBody Interviewer interviewer) {

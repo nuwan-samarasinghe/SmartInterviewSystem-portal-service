@@ -1,7 +1,7 @@
 package com.smartinterviewshedular.portalservice.candidatehasInterview.repository;
 
-import com.smartinterviewshedular.commonlib.candidate.model.CandidateHasInterview;
-import com.smartinterviewshedular.commonlib.candidate.model.CandidateInterviewIdentity;
+import com.smartinterviewshedular.commonlib.portalservice.model.CandidateHasInterview;
+import com.smartinterviewshedular.commonlib.portalservice.model.CandidateInterviewIdentity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

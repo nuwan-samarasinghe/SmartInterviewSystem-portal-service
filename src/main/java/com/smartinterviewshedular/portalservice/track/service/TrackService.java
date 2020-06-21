@@ -1,8 +1,7 @@
 package com.smartinterviewshedular.portalservice.track.service;
 
-import com.smartinterviewshedular.commonlib.track.model.Track;
+import com.smartinterviewshedular.commonlib.portalservice.model.Track;
 import com.smartinterviewshedular.portalservice.track.repository.TrackRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class TrackService {
-    @Autowired
     private final TrackRepository trackRepository;
 
     public TrackService(TrackRepository trackRepository) {

@@ -1,8 +1,6 @@
 package com.smartinterviewshedular.portalservice.interview.controller;
 
-import com.smartinterviewshedular.commonlib.candidate.model.*;
-import com.smartinterviewshedular.commonlib.interview.model.Interview;
-import com.smartinterviewshedular.commonlib.interviwer.model.*;
+import com.smartinterviewshedular.commonlib.portalservice.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +19,25 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/interviews")
 public class InterviewController {
-    @Autowired
-    private InterviewService interviewService;
-    @Autowired
-    private InterviewerService interviewerService;
-    @Autowired
-    private InterviewerHasInterviewService interviewerHasInterviewService;
-    @Autowired
-    private CandidateService candidateService;
-    @Autowired
-    private CandidateHasInterviewService candidateHasInterviewService;
+
+    private final InterviewService interviewService;
+    private final InterviewerService interviewerService;
+    private final InterviewerHasInterviewService interviewerHasInterviewService;
+    private final CandidateService candidateService;
+    private final CandidateHasInterviewService candidateHasInterviewService;
+
+    public InterviewController(
+            InterviewService interviewService,
+            InterviewerService interviewerService,
+            InterviewerHasInterviewService interviewerHasInterviewService,
+            CandidateService candidateService,
+            CandidateHasInterviewService candidateHasInterviewService) {
+        this.interviewService = interviewService;
+        this.interviewerService = interviewerService;
+        this.interviewerHasInterviewService = interviewerHasInterviewService;
+        this.candidateService = candidateService;
+        this.candidateHasInterviewService = candidateHasInterviewService;
+    }
 
 
     @PostMapping
@@ -62,24 +69,9 @@ public class InterviewController {
         for (Interview interview : allInterviews) {
             ArrayList<InterviewerInterviewStatusResponse> interviewerInterviewStatusResponses = new ArrayList<>();
             List<InterviewerHasInterview> byInterviewerInterviewIdentityInterviewId = interviewerHasInterviewService.findByInterviewerInterviewIdentityInterviewId(interview.getId());
-//            for (InterviewerHasInterview interviewerHasInterview : byInterviewerInterviewIdentityInterviewId) {
-//                InterviewerInterviewStatusResponse interviewerInterviewStatusResponse = new InterviewerInterviewStatusResponse();
-//                Optional<Interviewer> interviwerById = interviewerService.getInterviwerById(interviewerHasInterview.getInterviewerInterviewIdentity().getInterviewerId());
-//                interviewerInterviewStatusResponse.setInterviewer(interviwerById.get());
-//                interviewerInterviewStatusResponse.setStatus(interviewerHasInterview.getStatus());
-//                interviewerInterviewStatusResponses.add(interviewerInterviewStatusResponse);
-//            }
             buildInterviewerHasInterview(byInterviewerInterviewIdentityInterviewId, interviewerInterviewStatusResponses);
             ArrayList<CandidateInterviewStatusResponse> candidateInterviewStatusResponses = new ArrayList<>();
             List<CandidateHasInterview> byCandidateInterviewIdentityInterviewId = candidateHasInterviewService.findByCandidateInterviewIdentityInterviewId(interview.getId());
-//            for (CandidateHasInterview candidateHasInterview : byCandidateInterviewIdentityInterviewId) {
-//                Candidate candidate = candidateService.getCandidateById(candidateHasInterview.getCandidateInterviewIdentity().getCandidateId()).get();
-//                CandidateInterviewStatusResponse candidateInterviewStatusResponse = new CandidateInterviewStatusResponse();
-//                candidateInterviewStatusResponse.setCandidate(candidate);
-//                candidateInterviewStatusResponse.setIsSelected(candidateHasInterview.getIsSelected());
-//                candidateInterviewStatusResponse.setPosition(candidateHasInterview.getPosition());
-//                candidateInterviewStatusResponses.add(candidateInterviewStatusResponse);
-//            }
             buildCandidateHasInterview(byCandidateInterviewIdentityInterviewId, candidateInterviewStatusResponses);
 
             interview.setCandidateInterviewStatusResponses(candidateInterviewStatusResponses);
@@ -97,13 +89,6 @@ public class InterviewController {
         log.info("get interviewers for the interview id {}", id);
         ArrayList<InterviewerInterviewStatusResponse> interviewerInterviewStatusResponses = new ArrayList<>();
         List<InterviewerHasInterview> byInterviewerInterviewIdentityInterviewId = interviewerHasInterviewService.findByInterviewerInterviewIdentityInterviewId(id);
-//        for (InterviewerHasInterview interviewerHasInterview : byInterviewerInterviewIdentityInterviewId) {
-//            InterviewerInterviewStatusResponse interviewerInterviewStatusResponse = new InterviewerInterviewStatusResponse();
-//            Optional<Interviewer> interviwerById = interviewerService.getInterviwerById(interviewerHasInterview.getInterviewerInterviewIdentity().getInterviewerId());
-//            interviewerInterviewStatusResponse.setInterviewer(interviwerById.get());
-//            interviewerInterviewStatusResponse.setStatus(interviewerHasInterview.getStatus());
-//            interviewerInterviewStatusResponses.add(interviewerInterviewStatusResponse);
-//        }
         buildInterviewerHasInterview(byInterviewerInterviewIdentityInterviewId, interviewerInterviewStatusResponses);
         if (byInterviewerInterviewIdentityInterviewId.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -145,7 +130,7 @@ public class InterviewController {
             interviewerHasInterview.setInterviewerInterviewIdentity(interviewerInterviewIdentity);
             interviewerHasInterview.setStatus(interviewerInterviewStatus.getStatus());
 
-            InterviewerHasInterview interviewerHasInterview1 = interviewerHasInterviewService.createOrUpdateInterviewerHasInterview(interviewerHasInterview);
+            interviewerHasInterviewService.createOrUpdateInterviewerHasInterview(interviewerHasInterview);
         }
         CandidateInterviewStatus candidate = interview.getCandidate();
         Candidate candidateById = candidateService.getCandidateById(candidate.getId()).get();
@@ -158,7 +143,7 @@ public class InterviewController {
         candidateHasInterview.setIsSelected(candidate.getIsSelected());
         candidateHasInterview.setPosition(candidate.getPosition());
 
-        CandidateHasInterview orUpdateCandidateHasInterview = candidateHasInterviewService.createOrUpdateCandidateHasInterview(candidateHasInterview);
+        candidateHasInterviewService.createOrUpdateCandidateHasInterview(candidateHasInterview);
     }
 
     @GetMapping(value = "/{id}/candidate")
@@ -166,14 +151,6 @@ public class InterviewController {
         log.info("get candidate for the interview id {}", id);
         ArrayList<CandidateInterviewStatusResponse> candidateInterviewStatusResponses = new ArrayList<>();
         List<CandidateHasInterview> byCandidateInterviewIdentityInterviewId = candidateHasInterviewService.findByCandidateInterviewIdentityInterviewId(id);
-//        for (CandidateHasInterview candidateHasInterview : byCandidateInterviewIdentityInterviewId) {
-//            Candidate candidate = candidateService.getCandidateById(candidateHasInterview.getCandidateInterviewIdentity().getCandidateId()).get();
-//            CandidateInterviewStatusResponse candidateInterviewStatusResponse = new CandidateInterviewStatusResponse();
-//            candidateInterviewStatusResponse.setCandidate(candidate);
-//            candidateInterviewStatusResponse.setIsSelected(candidateHasInterview.getIsSelected());
-//            candidateInterviewStatusResponse.setPosition(candidateHasInterview.getPosition());
-//            candidateInterviewStatusResponses.add(candidateInterviewStatusResponse);
-//        }
         buildCandidateHasInterview(byCandidateInterviewIdentityInterviewId, candidateInterviewStatusResponses);
         if (candidateInterviewStatusResponses.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -188,24 +165,9 @@ public class InterviewController {
         Interview interview = interviewService.getInterviewById(id).get();
         ArrayList<InterviewerInterviewStatusResponse> interviewerInterviewStatusResponses = new ArrayList<>();
         List<InterviewerHasInterview> byInterviewerInterviewIdentityInterviewId = interviewerHasInterviewService.findByInterviewerInterviewIdentityInterviewId(id);
-//        for (InterviewerHasInterview interviewerHasInterview : byInterviewerInterviewIdentityInterviewId) {
-//            InterviewerInterviewStatusResponse interviewerInterviewStatusResponse = new InterviewerInterviewStatusResponse();
-//            Optional<Interviewer> interviwerById = interviewerService.getInterviwerById(interviewerHasInterview.getInterviewerInterviewIdentity().getInterviewerId());
-//            interviewerInterviewStatusResponse.setInterviewer(interviwerById.get());
-//            interviewerInterviewStatusResponse.setStatus(interviewerHasInterview.getStatus());
-//            interviewerInterviewStatusResponses.add(interviewerInterviewStatusResponse);
-//        }
         buildInterviewerHasInterview(byInterviewerInterviewIdentityInterviewId, interviewerInterviewStatusResponses);
         ArrayList<CandidateInterviewStatusResponse> candidateInterviewStatusResponses = new ArrayList<>();
         List<CandidateHasInterview> byCandidateInterviewIdentityInterviewId = candidateHasInterviewService.findByCandidateInterviewIdentityInterviewId(id);
-//        for (CandidateHasInterview candidateHasInterview : byCandidateInterviewIdentityInterviewId) {
-//            Candidate candidate = candidateService.getCandidateById(candidateHasInterview.getCandidateInterviewIdentity().getCandidateId()).get();
-//            CandidateInterviewStatusResponse candidateInterviewStatusResponse = new CandidateInterviewStatusResponse();
-//            candidateInterviewStatusResponse.setCandidate(candidate);
-//            candidateInterviewStatusResponse.setIsSelected(candidateHasInterview.getIsSelected());
-//            candidateInterviewStatusResponse.setPosition(candidateHasInterview.getPosition());
-//            candidateInterviewStatusResponses.add(candidateInterviewStatusResponse);
-//        }
         buildCandidateHasInterview(byCandidateInterviewIdentityInterviewId, candidateInterviewStatusResponses);
 
         interview.setCandidateInterviewStatusResponses(candidateInterviewStatusResponses);

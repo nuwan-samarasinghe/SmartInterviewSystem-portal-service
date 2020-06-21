@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.track.controller;
 
-import com.smartinterviewshedular.commonlib.track.model.Track;
+import com.smartinterviewshedular.commonlib.portalservice.model.Track;
 import com.smartinterviewshedular.portalservice.track.service.TrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/tracks")
 public class TrackController {
-    @Autowired
-    private TrackService trackService;
+    private final TrackService trackService;
+
+    public TrackController(TrackService trackService) {
+        this.trackService = trackService;
+    }
 
     @PostMapping
     public ResponseEntity<Track> createTrack(@RequestBody Track track) {

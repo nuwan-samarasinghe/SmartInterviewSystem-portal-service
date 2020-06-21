@@ -1,7 +1,6 @@
 package com.smartinterviewshedular.portalservice.technology.service;
 
-
-import com.smartinterviewshedular.commonlib.technology.model.Technology;
+import com.smartinterviewshedular.commonlib.portalservice.model.Technology;
 import com.smartinterviewshedular.portalservice.technology.repository.TechnologyRepository;
 import org.springframework.stereotype.Service;
 

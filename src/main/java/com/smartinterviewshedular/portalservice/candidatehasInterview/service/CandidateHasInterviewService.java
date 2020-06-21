@@ -1,15 +1,13 @@
 package com.smartinterviewshedular.portalservice.candidatehasInterview.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.smartinterviewshedular.commonlib.candidate.model.CandidateHasInterview;
+import com.smartinterviewshedular.commonlib.portalservice.model.CandidateHasInterview;
 import com.smartinterviewshedular.portalservice.candidatehasInterview.repository.CandidateHasInterviewRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CandidateHasInterviewService {
-    @Autowired
     private final CandidateHasInterviewRepository candidateHasInterviewRepository;
 
     public CandidateHasInterviewService(CandidateHasInterviewRepository candidateHasInterviewRepository) {

@@ -1,12 +1,12 @@
 package com.smartinterviewshedular.portalservice.customer.controller;
 
+import com.smartinterviewshedular.commonlib.portalservice.model.Customer;
 import com.smartinterviewshedular.portalservice.customer.service.CustomerService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.smartinterviewshedular.commonlib.customer.model.Customer;
 
 import java.util.List;
 import java.util.Optional;

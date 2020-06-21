@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.vacancy.service;
 
-import com.smartinterviewshedular.commonlib.vacancy.model.Vacancy;
+import com.smartinterviewshedular.commonlib.portalservice.model.Vacancy;
 import org.springframework.stereotype.Service;
 import com.smartinterviewshedular.portalservice.vacancy.repository.VacancyRepository;
 

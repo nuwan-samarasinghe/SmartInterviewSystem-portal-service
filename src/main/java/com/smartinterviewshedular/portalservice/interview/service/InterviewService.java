@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.interview.service;
 
-import com.smartinterviewshedular.commonlib.interview.model.Interview;
+import com.smartinterviewshedular.commonlib.portalservice.model.Interview;
 import com.smartinterviewshedular.portalservice.interview.repository.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class InterviewService {
-    @Autowired
     private final InterviewRepository interviewRepository;
 
     public InterviewService(InterviewRepository interviewRepository) {

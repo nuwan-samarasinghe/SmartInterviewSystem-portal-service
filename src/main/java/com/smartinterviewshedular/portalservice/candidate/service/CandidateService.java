@@ -1,6 +1,6 @@
 package com.smartinterviewshedular.portalservice.candidate.service;
 
-import com.smartinterviewshedular.commonlib.candidate.model.Candidate;
+import com.smartinterviewshedular.commonlib.portalservice.model.Candidate;
 import com.smartinterviewshedular.portalservice.candidate.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

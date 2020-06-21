@@ -1,7 +1,6 @@
 package com.smartinterviewshedular.portalservice.technology.controller;
 
-
-import com.smartinterviewshedular.commonlib.technology.model.Technology;
+import com.smartinterviewshedular.commonlib.portalservice.model.Technology;
 import com.smartinterviewshedular.portalservice.technology.service.TechnologyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/technology")
 public class TechnologyController {
-    @Autowired
-    private TechnologyService technologyService;
+    private final TechnologyService technologyService;
 
     public TechnologyController(TechnologyService technologyService) {
         this.technologyService = technologyService;
-
     }
 
     @GetMapping("/{id}")
@@ -54,12 +51,4 @@ public class TechnologyController {
         log.info("updated the technology {}", technology);
         return ResponseEntity.ok().body(technologyService.updateTechnology(technology));
     }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Technology> deleteTechnology(@PathVariable Integer id) {
-//        log.info("deleted the technology by id {}", id);
-//        Optional<Technology> technologyById = technologyService.getTechnologyById(id);
-//        technologyById.get().setDeleted(true);
-//        return ResponseEntity.ok().body(technologyService.updateTechnology(technologyById.get()));
-//    }
 }

@@ -1,8 +1,7 @@
 package com.smartinterviewshedular.portalservice.vacancy.controller;
 
-
-import com.smartinterviewshedular.commonlib.technology.model.Technology;
-import com.smartinterviewshedular.commonlib.vacancy.model.Vacancy;
+import com.smartinterviewshedular.commonlib.portalservice.model.Technology;
+import com.smartinterviewshedular.commonlib.portalservice.model.Vacancy;
 import com.smartinterviewshedular.portalservice.technology.service.TechnologyService;
 import com.smartinterviewshedular.portalservice.vacancy.service.VacancyService;
 import lombok.extern.slf4j.Slf4j;

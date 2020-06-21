@@ -1,11 +1,6 @@
 package com.smartinterviewshedular.portalservice.candidate.controller;
 
-import com.smartinterviewshedular.commonlib.candidate.model.Candidate;
-import com.smartinterviewshedular.commonlib.candidate.model.CandidateHasInterview;
-import com.smartinterviewshedular.commonlib.candidate.model.CandidateInterviewStatusResponse;
-import com.smartinterviewshedular.commonlib.interview.model.Interview;
-import com.smartinterviewshedular.commonlib.technology.model.Technology;
-import com.smartinterviewshedular.commonlib.track.model.Track;
+import com.smartinterviewshedular.commonlib.portalservice.model.*;
 import com.smartinterviewshedular.portalservice.candidate.service.CandidateService;
 import com.smartinterviewshedular.portalservice.candidatehasInterview.service.CandidateHasInterviewService;
 import com.smartinterviewshedular.portalservice.interview.service.InterviewService;
@@ -24,16 +19,21 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/candidates")
 public class CandidateController {
+
+    private final CandidateService candidateService;
+    private final TrackService trackService;
+    private final CandidateHasInterviewService candidateHasInterviewService;
+    private final InterviewService interviewService;
+    private final TechnologyService technologyService;
+
     @Autowired
-    private CandidateService candidateService;
-    @Autowired
-    private TrackService trackService;
-    @Autowired
-    private CandidateHasInterviewService candidateHasInterviewService;
-    @Autowired
-    private InterviewService interviewService;
-    @Autowired
-    private TechnologyService technologyService;
+    public CandidateController(CandidateService candidateService, TrackService trackService, CandidateHasInterviewService candidateHasInterviewService, InterviewService interviewService, TechnologyService technologyService) {
+        this.trackService = trackService;
+        this.candidateHasInterviewService = candidateHasInterviewService;
+        this.interviewService = interviewService;
+        this.technologyService = technologyService;
+        this.candidateService = candidateService;
+    }
 
     @PostMapping
     public ResponseEntity<Candidate> createCandidate(@RequestBody Candidate candidate) {
@@ -57,9 +57,7 @@ public class CandidateController {
         List<Technology> technologyList = candidate.getTechnologyList();
         List<Technology> technologyList1 = new ArrayList<>();
 
-        technologyList.iterator().forEachRemaining(technology -> {
-            technologyList1.add(technologyService.getTechnologyById(technology.getId()).get());
-        });
+        technologyList.iterator().forEachRemaining(technology -> technologyList1.add(technologyService.getTechnologyById(technology.getId()).get()));
         candidate.setTechnologyList(technologyList1);
         candidate.setTrack(trackById.get());
         return ResponseEntity.ok().body(candidateService.updateCandidate(candidate));
