@@ -7,6 +7,7 @@ import com.smartinterviewshedular.portalservice.vacancy.service.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,16 +17,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/vacancy")
 public class VacancyController {
-    @Autowired
-    private VacancyService vacancyService;
-    @Autowired
-    private TechnologyService technologyService;
+    private final VacancyService vacancyService;
+    private final TechnologyService technologyService;
 
-    public VacancyController(VacancyService vacancyService) {
+    public VacancyController(VacancyService vacancyService, TechnologyService technologyService) {
         this.vacancyService = vacancyService;
+        this.technologyService = technologyService;
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('get_vacancy')")
     public ResponseEntity<Vacancy> getVacancyById(@PathVariable Integer id) {
         log.info("get Vacancy by id {}", id);
         Optional<Vacancy> vacancyById = vacancyService.getVacancyById(id);
@@ -36,6 +37,7 @@ public class VacancyController {
     }
 
     @PostMapping("/")
+    @PreAuthorize(value = "hasAnyAuthority('create_vacancy')")
     public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy) {
         Optional<Technology> technology = technologyService.getTechnologyById(vacancy.getTechnology().getId());
         vacancy.setTechnology(technology.get());
@@ -45,6 +47,7 @@ public class VacancyController {
     }
 
     @GetMapping("/")
+    @PreAuthorize(value = "hasAnyAuthority('get_vacancy')")
     public ResponseEntity<List<Vacancy>> getAllVacancies() {
         List<Vacancy> allVacancies = vacancyService.getAllVacancies();
         if (!allVacancies.isEmpty()) {
@@ -55,6 +58,7 @@ public class VacancyController {
     }
 
     @PutMapping("/")
+    @PreAuthorize(value = "hasAnyAuthority('update_vacancy')")
     public ResponseEntity<Vacancy> updateVacancy(@RequestBody Vacancy vacancy) {
         Optional<Technology> technology = technologyService.getTechnologyById(vacancy.getTechnology().getId());
         vacancy.setTechnology(technology.get());
@@ -64,6 +68,7 @@ public class VacancyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('delete_vacancy')")
     public ResponseEntity<Vacancy> deleteVacancyById(@PathVariable Integer id) {
         log.info("Delete the vacancy by Id {}", id);
         Optional<Vacancy> vacancyById = vacancyService.getVacancyById(id);

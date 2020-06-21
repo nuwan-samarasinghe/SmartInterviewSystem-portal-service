@@ -1,15 +1,15 @@
 package com.smartinterviewshedular.portalservice.interview.controller;
 
 import com.smartinterviewshedular.commonlib.portalservice.model.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.smartinterviewshedular.portalservice.candidate.service.CandidateService;
+import com.smartinterviewshedular.portalservice.candidatehasInterview.service.CandidateHasInterviewService;
 import com.smartinterviewshedular.portalservice.interview.service.InterviewService;
 import com.smartinterviewshedular.portalservice.interviewer.service.InterviewerService;
 import com.smartinterviewshedular.portalservice.interviewerhasinterview.service.InterviewerHasInterviewService;
-import com.smartinterviewshedular.portalservice.candidate.service.CandidateService;
-import com.smartinterviewshedular.portalservice.candidatehasInterview.service.CandidateHasInterviewService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class InterviewController {
 
 
     @PostMapping
+    @PreAuthorize(value = "hasAnyAuthority('create_interview')")
     public ResponseEntity<Interview> createInterview(@RequestBody Interview interview) {
         log.info("creating an interview record {}", interview);
         if (interview.getInterviewers().isEmpty()) {
@@ -52,6 +53,7 @@ public class InterviewController {
     }
 
     @PutMapping
+    @PreAuthorize(value = "hasAnyAuthority('update_interview')")
     public ResponseEntity<Interview> updateInterview(@RequestBody Interview interview) {
         log.info("updating an interview record {}", interview);
         if (interview.getInterviewers().isEmpty()) {
@@ -63,6 +65,7 @@ public class InterviewController {
     }
 
     @GetMapping
+    @PreAuthorize(value = "hasAnyAuthority('get_interview')")
     public ResponseEntity<Object> getInterviews() {
         log.info("get all interviews");
         List<Interview> allInterviews = interviewService.getAllInterviews();
@@ -85,6 +88,7 @@ public class InterviewController {
     }
 
     @GetMapping(value = "/{id}/interviewers")
+    @PreAuthorize(value = "hasAnyAuthority('get_interviewers')")
     public ResponseEntity<Object> getInterviewInterviewers(@PathVariable Integer id) {
         log.info("get interviewers for the interview id {}", id);
         ArrayList<InterviewerInterviewStatusResponse> interviewerInterviewStatusResponses = new ArrayList<>();
@@ -147,6 +151,7 @@ public class InterviewController {
     }
 
     @GetMapping(value = "/{id}/candidate")
+    @PreAuthorize(value = "hasAnyAuthority('get_interview_candidate')")
     public ResponseEntity<Object> getInterviewCandidate(@PathVariable Integer id) {
         log.info("get candidate for the interview id {}", id);
         ArrayList<CandidateInterviewStatusResponse> candidateInterviewStatusResponses = new ArrayList<>();
@@ -160,6 +165,7 @@ public class InterviewController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('get_interview')")
     public ResponseEntity<Interview> getInterviewById(@PathVariable Integer id) {
         log.info("get interviewer by id {}", id);
         Interview interview = interviewService.getInterviewById(id).get();

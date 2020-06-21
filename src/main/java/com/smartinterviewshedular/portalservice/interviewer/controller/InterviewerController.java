@@ -7,6 +7,7 @@ import com.smartinterviewshedular.portalservice.interviewerhasinterview.service.
 import com.smartinterviewshedular.portalservice.track.service.TrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class InterviewerController {
     }
 
     @PostMapping
+    @PreAuthorize(value = "hasAnyAuthority('create_interviwer')")
     public ResponseEntity<Interviewer> createInterviewer(@RequestBody Interviewer interviewer) {
         log.info("creating an interviewer record {}", interviewer);
         Optional<Track> trackById = trackService.getTrackById(interviewer.getTrack().getId());
@@ -42,6 +44,7 @@ public class InterviewerController {
     }
 
     @PutMapping
+    @PreAuthorize(value = "hasAnyAuthority('update_interviwer')")
     public ResponseEntity<Interviewer> updateInterviewer(@RequestBody Interviewer interviewer) {
         log.info("update an interviewer record {}", interviewer);
         Optional<Track> trackById = trackService.getTrackById(interviewer.getTrack().getId());
@@ -50,6 +53,7 @@ public class InterviewerController {
     }
 
     @GetMapping
+    @PreAuthorize(value = "hasAnyAuthority('get_interviwer')")
     public ResponseEntity<Object> getInterviewers() {
         log.info("get all tracks");
         List<Interviewer> allInterviewers = interviewerService.getAllInterviewers();
@@ -61,6 +65,7 @@ public class InterviewerController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('get_interviwer')")
     public ResponseEntity<Interviewer> getInterviewerById(@PathVariable Integer id) {
         log.info("get interviewer by id {}", id);
         Optional<Interviewer> interviwerById = interviewerService.getInterviwerById(id);
@@ -70,6 +75,7 @@ public class InterviewerController {
     }
 
     @GetMapping(value = "/{id}/interviews")
+    @PreAuthorize(value = "hasAnyAuthority('create_interviwer_history')")
     public ResponseEntity<Object> getInterviewerInterviewHistory(@PathVariable Integer id) {
         log.info("get interviews by id {}", id);
         ArrayList<InterviewerInterviewStatusResponse> interviewStatusResponses = new ArrayList<>();
@@ -85,6 +91,7 @@ public class InterviewerController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('delete_interviwer')")
     public ResponseEntity<Interviewer> deleteInterviewerById(@PathVariable Integer id) {
         log.info("delete interviewer by id {}", id);
         Optional<Interviewer> interviwerById = interviewerService.getInterviwerById(id);

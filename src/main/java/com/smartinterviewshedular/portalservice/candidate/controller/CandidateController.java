@@ -9,6 +9,7 @@ import com.smartinterviewshedular.portalservice.track.service.TrackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class CandidateController {
     }
 
     @PostMapping
+    @PreAuthorize(value = "hasAnyAuthority('create_candidate')")
     public ResponseEntity<Candidate> createCandidate(@RequestBody Candidate candidate) {
         log.info("creating a candidate record {}", candidate);
         Optional<Track> trackById = trackService.getTrackById(candidate.getTrack().getId());
@@ -51,6 +53,7 @@ public class CandidateController {
     }
 
     @PutMapping
+    @PreAuthorize(value = "hasAnyAuthority('update_candidate')")
     public ResponseEntity<Candidate> updateCandidate(@RequestBody Candidate candidate) {
         log.info("updating a candidate record {}", candidate);
         Optional<Track> trackById = trackService.getTrackById(candidate.getTrack().getId());
@@ -64,6 +67,7 @@ public class CandidateController {
     }
 
     @GetMapping
+    @PreAuthorize(value = "hasAnyAuthority('get_candidate')")
     public ResponseEntity<Object> getCandidates() {
         log.info("get all candidates");
         List<Candidate> allCandidates = candidateService.getAllCandidates();
@@ -75,6 +79,7 @@ public class CandidateController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('get_candidate')")
     public ResponseEntity<Candidate> getCandidateById(@PathVariable Integer id) {
         log.info("get candidate by id {}", id);
         Optional<Candidate> candidateById = candidateService.getCandidateById(id);
@@ -84,6 +89,7 @@ public class CandidateController {
     }
 
     @GetMapping(value = "/{id}/interviews")
+    @PreAuthorize(value = "hasAnyAuthority('get_candidate_interview')")
     public ResponseEntity<Object> getCandidateInterviewHistory(@PathVariable Integer id) {
         log.info("get candidate interview history by id {}", id);
         ArrayList<CandidateInterviewStatusResponse> candidateInterviewStatusResponses = new ArrayList<>();
@@ -101,6 +107,7 @@ public class CandidateController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize(value = "hasAnyAuthority('remove_candidate')")
     public ResponseEntity<Candidate> deleteCandidateById(@PathVariable Integer id) {
         log.info("delete candidate by id {}", id);
         Optional<Candidate> candidateById = candidateService.getCandidateById(id);
