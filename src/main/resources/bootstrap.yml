@@ -1,5 +1,5 @@
 spring:
   cloud:
     config:
-      uri: http://localhost:8181
+      uri: http://ec2-3-235-104-89.compute-1.amazonaws.com/:8181
 
